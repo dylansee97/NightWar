@@ -119,3 +119,6 @@ class SuperPunch(Skill):
 class Fuckery(Skill):
     # gain control of 1 square of enemy if got  no one there
     pass
+
+class NewSkill(Skill):
+    pass
