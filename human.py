@@ -1,13 +1,14 @@
 import random
 
+
 class TimeVariable(object):
-    def __init__(self, app, value, default,created, expiry) -> None:
+    def __init__(self, app, value, default, created, expiry) -> None:
         self.app = app
         self.value = value
         self.default = default
         self.created = created
         self.expiry = expiry
-    
+
     def expired(self, current) -> bool:
         return True if current > self.created + self.expiry else False
 
@@ -28,6 +29,7 @@ class TimeVariable(object):
         print(f"11111111111111111111111 {self.get_value()}")
         return self.get_value()
 
+
 class Human:
     def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx):
         self.name = name
@@ -43,7 +45,9 @@ class Human:
         self.team = None
         self.app = app
 
-        self.visible = TimeVariable(app=self.app, value=False, default=True,created=1, expiry=999)
+        self.visible = TimeVariable(
+            app=self.app, value=False, default=True, created=1, expiry=999
+        )
         # range
         # skill
         # team

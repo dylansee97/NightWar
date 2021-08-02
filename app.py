@@ -1,5 +1,4 @@
 from tabulate import tabulate
-
 from building import *
 from human import *
 from skill import *
@@ -12,11 +11,11 @@ class Game:
         self.team1 = None
         self.team2 = None
         self.grid1 = [
-            [Building(self,"Floor", visible=False) for _ in range(width)]
+            [Building(self, "Floor", visible=False) for _ in range(width)]
             for _ in range(height)
         ]
         self.grid2 = [
-            [Building(self,"Floor", visible=False) for _ in range(width)]
+            [Building(self, "Floor", visible=False) for _ in range(width)]
             for _ in range(height)
         ]
 
@@ -24,7 +23,9 @@ class Game:
 
     def print_map(self):
         total_grid = (
-            self.grid1 + [[Building(self,"Wall") for _ in range(self.width)]] + self.grid2
+            self.grid1
+            + [[Building(self, "Wall") for _ in range(self.width)]]
+            + self.grid2
         )
         header = range(self.width)
         index = list(range(self.height)) + [""] + list(range(self.height))
@@ -99,7 +100,7 @@ class Game:
                                     enemy_map[human.team],
                                     row_idx,
                                     col_idx,
-                                    self.turn
+                                    self.turn,
                                 )
                                 self.turn += 1
                                 break
@@ -115,25 +116,28 @@ class Game:
             print(f"{team2.name} win!")
 
 
-game = Game(width=10, height=3)
+if __name__ == "__main__":
+    game = Game(width=10, height=3)
 
-punch = BasicAttack("punch", 35)
-lpunch = LightPunch("light punch", 35)
-teleport = Teleport("teleport", 0)
-fuckteam = Fuckteam("fuckteam", 999)
-reveal = RevealingLight("revealing light", 0)
+    punch = BasicAttack("punch", 35)
+    lpunch = LightPunch("light punch", 35)
+    teleport = Teleport("teleport", 0)
+    fuckteam = Fuckteam("fuckteam", 999)
+    reveal = RevealingLight("revealing light", 0)
 
-#def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx)
-a = Human(game,"ben", 10, 32, 5, "fire", [punch, reveal, teleport, fuckteam], 0, 0)
-b = Human(game,"dylan", 10, 32, 5, "fire", [punch, lpunch, teleport, fuckteam], 1, 0)
+    # def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx)
+    a = Human(
+        game, "ben", 100, 32, 5, "fire", [punch, reveal, teleport, fuckteam], 0, 0
+    )
+    b = Human(
+        game, "dylan", 100, 32, 5, "fire", [punch, lpunch, teleport, fuckteam], 1, 0
+    )
 
-c = Human(game,"brandon", 10, 32, 5, "fire", [punch, reveal], 0, 1)
-d = Human(game,"karl", 100, 32, 0, "fire", [punch, lpunch], 1, 1)
+    c = Human(game, "brandon", 100, 32, 5, "fire", [punch, reveal], 0, 1)
+    d = Human(game, "karl", 100, 32, 0, "fire", [punch, lpunch], 1, 1)
 
+    # (self, name, hp, speed, defense, type, skills, row_idx, col_idx)
+    team1 = Team(game, "gay team", [a, b])
+    team2 = Team(game, "straight team", [c, d])
 
-# (self, name, hp, speed, defense, type, skills, row_idx, col_idx)
-team1 = Team(game, "gay team", [a, b])
-team2 = Team(game,"straight team", [c, d])
-
-
-game.fight(team1, team2)
+    game.fight(team1, team2)
