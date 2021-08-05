@@ -5,7 +5,7 @@ from skill import *
 
 
 class Team:
-    def __init__(self,app, name, members):
+    def __init__(self, app, name, members):
         self.app = app
         self.name = name
         self.members = members

@@ -1,38 +1,10 @@
-import random
+from time_variable import TimeVariable
 
-class TimeVariable(object):
-    def __init__(self, app, value, default,created, expiry) -> None:
-        self.app = app
-        self.value = value
-        self.default = default
-        self.created = created
-        self.expiry = expiry
-    
-    def expired(self, current) -> bool:
-        return True if current > self.created + self.expiry else False
-
-    def get_value(self) -> str:
-        return self.value if not self.expired(self.app.turn) else self.default
-
-    def set_value(self, new_value, new_defailt, current, expiry=999):
-        self.value = new_value
-        self.default = new_defailt
-        self.created = current
-        self.expiry = expiry
-
-    def __repr__(self) -> str:
-        print(f"asdaisdnasdoiasnd {self.get_value()}")
-        return self.get_value()
-
-    def __str__(self) -> str:
-        print(f"11111111111111111111111 {self.get_value()}")
-        return self.get_value()
 
 class Human:
     def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx):
         self.name = name
         self.hp = hp
-        # self.damage = damage
         self.speed = speed
         self.skills = skills
 
@@ -43,11 +15,9 @@ class Human:
         self.team = None
         self.app = app
 
-        self.visible = TimeVariable(app=self.app, value=False, default=True,created=1, expiry=999)
-        # range
-        # skill
-        # team
-        # location (r,c)
+        self.visible = TimeVariable(
+            app=self.app, value=False, default=True, created=1, expiry=999
+        )
 
     def __repr__(self) -> str:
         return self.name if self.visible.get_value() else ""
