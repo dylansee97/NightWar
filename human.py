@@ -1,6 +1,7 @@
 from time_variable import TimeVariable
 
 
+
 class Human:
     def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx):
         self.name = name

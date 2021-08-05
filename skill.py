@@ -47,19 +47,33 @@ class LightPunch(Skill):
         enemy = grid[row_idx][col_idx]
         if isinstance(enemy, Human):
             enemy.hp -= self.damage
-            enemy.visible = True
             print(f"{enemy.name} takes {self.damage} damage and left {enemy.hp} hp")
 
         for x, y in zip(x_axis, y_axis):
             try:
                 adj = grid[row_idx + x][col_idx + y]
-                if isinstance(adj, Human):
-                    adj.visible = True
+                adj.visible.set_value(True, False, current, expiry=1)
             except IndexError:
                 continue
 
         else:  # damage floor by 1
             pass
+
+
+class RevealingLight(Skill):
+    # reveals whole grid for 1 turn
+    def invoke(self, caller, caller_grid, grid, row_idx, col_idx, current):
+        x_axis = [0, 0, -1, 1, -1, 1, -1, 1, 0]
+        y_axis = [-1, 1, 0, 0, -1, 1, 1, -1, 0]
+        enemy = grid[row_idx][col_idx]
+
+        for x, y in zip(x_axis, y_axis):
+            try:
+                adj = grid[row_idx + x][col_idx + y]
+                # if isinstance(adj, Human):
+                adj.visible.set_value(True, False, current, expiry=1)
+            except IndexError:
+                continue
 
 
 class Teleport(Skill):

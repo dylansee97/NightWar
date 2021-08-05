@@ -1,6 +1,7 @@
 from time_variable import TimeVariable
 
 
+
 class Building:
     def __init__(self, app, name, visible: bool = True) -> None:
         self.name = name
