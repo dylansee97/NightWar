@@ -7,7 +7,11 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 
 from building import Floor
 from grid_square import GridSquare, GridSquareSelection
+import socket
+from threading import Thread
 
+HOST = '127.0.0.1'
+PORT = 9999
 
 class NightWar(App):
     def __init__(self, **kwargs):
@@ -25,6 +29,26 @@ class NightWar(App):
         self.team_2_grid = [
             [None for _ in range(self.width)] for _ in range(self.height)
         ]
+
+        try:
+            self.host = kwargs['host']
+            self.port = kwargs['port']
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.s.connect((self.host, self.port))
+        except ConnectionRefusedError:
+            pass
+
+    def receive_message(self):
+        data = self.s.recv(1024).decode('utf-8')
+        print(data)
+        
+    def send_message(self, msg_name, msg_data):
+        msg = str(dict(msg_name=msg_name, msg_data=msg_data))
+        bytes_object = bytes(msg, encoding='utf-8')
+        t1 = Thread(target=self.s.sendall, args=(bytes_object,))
+        t1.start()
+        t2 = Thread(target=self.receive_message)
+        t2.start()
 
     def make_main_screen_widget(self):
         main_screen_widget = GridLayout(cols=3)
@@ -56,7 +80,7 @@ class NightWar(App):
                     GridSquare(location=(i + self.height, j), obj=obj, team=1)
                 )
 
-        main_screen_widget.add_widget(Button(text="Team 1 stats", size_hint_x=0.2))
+        main_screen_widget.add_widget(Button(text="Team 1 stats", size_hint_x=0.2, on_press=lambda _: self.send_message('team_selection', self.team_1_grid)))
         main_screen_widget.add_widget(board)
         main_screen_widget.add_widget(Button(text="Team 2 stats", size_hint_x=0.2))
 
@@ -142,5 +166,5 @@ class NightWar(App):
 
 
 if __name__ == "__main__":
-    app = NightWar(width=2, height=2)
+    app = NightWar(width=2, height=2, host=HOST, port=PORT)
     app.run()
