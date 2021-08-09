@@ -1,6 +1,7 @@
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
+from kivy.uix.image import Image
 
 from app import a, b, c, d
 
@@ -54,6 +55,7 @@ class GridSquareSelection(Button):
                 HEROES_COUNT[selection] -= 1
                 self.refresh_text(self.obj.name)
                 self.team_grid[self.row % self.app.height][self.col] = self
+                self.background_normal = f"{self.obj.name}.jpg"
                 popup.dismiss()
 
             return callback
