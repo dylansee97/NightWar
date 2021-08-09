@@ -1,8 +1,8 @@
+from grid_square_object import GridSquareObject
 from time_variable import TimeVariable
 
 
-
-class Human:
+class Human(GridSquareObject):
     def __init__(self, app, name, hp, speed, defense, type, skills, row_idx, col_idx):
         self.name = name
         self.hp = hp
@@ -22,6 +22,9 @@ class Human:
 
     def __repr__(self) -> str:
         return self.name if self.visible.get_value() else ""
+
+    def get_selection_display(self):
+        return self.name
 
     def choose_move(self):
         print(f"[{self.name} - {self.app.turn}] choose your move!", end=" ")
